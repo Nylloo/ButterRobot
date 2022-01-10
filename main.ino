@@ -10,7 +10,11 @@ LIDARLite myLidarLite;
 #define moteurG_Sens1 33
 #define moteurG_Sens2 32
 
+#define LedPIN 52
 
+bool ledState = LOW;
+unsigned long previousLedTimer = 0;
+unsigned long ledInterval = 1000;
 
 
 void forward(int timer){
@@ -52,29 +56,32 @@ void stop(){
   digitalWrite(moteurG_Sens1, LOW);
 }
 
-void LEDrun() {
-  digitalWrite(52, HIGH);
-  delay(100);
-  digitalWrite(52, LOW);
-  delay(100);
-  }
+void runLed(){
+ 
+  unsigned long ledTimer = millis();
 
+  if (ledTimer - previousLedTimer >= ledInterval) {
+    previousMillis = currentMillis;
+    digitalWrite(LedPIN, !ledState);
+  }
+  
+}
 
 void setup() {
-  pinMode(52, OUTPUT);
+  pinMode(LedPIN, OUTPUT);
   pinMode(moteurD_Sens1, OUTPUT);
   pinMode(moteurD_Sens2, OUTPUT);
   Serial.begin(9600);
   myLidarLite.begin(0, true);
   myLidarLite.configure(0);
   stop();
-  delay(500); 
+  delay(100); 
 }
 
 void loop() {
+  runLed();
   if(myLidarLite.distance() > 30  ){
     forward(250);
-    LEDrun();
   } else {
     backwards(5);
     stop();
