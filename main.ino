@@ -59,23 +59,6 @@ void LEDrun() {
   delay(100);
   }
 
-void LEDstop() {
-  digitalWrite(52,HIGH);
-  delay(100);
-  digitalWrite(52,LOW);
-  delay(100);
-}
-
-void Startup(int timer){
-  digitalWrite(52, HIGH);
-  digitalWrite(moteurD_Sens2, LOW);
-  digitalWrite(moteurD_Sens1, HIGH);
-  digitalWrite(moteurG_Sens2, HIGH);
-  digitalWrite(moteurG_Sens1, LOW);
-  delay(timer);
-  digitalWrite(52, LOW);
-}
-
 
 void setup() {
   pinMode(52, OUTPUT);
@@ -92,13 +75,9 @@ void loop() {
   if(myLidarLite.distance() > 30  ){
     forward(250);
     LEDrun();
-   
-  } 
-  else {
-  //  LEDrun();
+  } else {
     backwards(5);
     stop();
     delay(99999);
-    
   }
 }
